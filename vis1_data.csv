@@ -1,31 +1,31 @@
-Year,Race,Females Enrolled
-2012,Asian,307
-2012,Black,66
-2012,Hispanic, 44
-2012,Native American,3
-2012,Pacific,1
-2012,White,36
-2013,Asian,291
-2013,Black,60
-2013,Hispanic,50
-2013,Native American,4
-2013,Pacific,2
-2013,White,32
-2014,Asian,444
-2014,Black,69
-2014,Hispanic,71
-2014,Native American,1
-2014,Pacific,3
-2014,White,41
-2015,Asian,532
-2015,Black,63
-2015,Hispanic,75
-2015,Native American,1
-2015,Pacific,2
-2015,White,34
-2016,Asian,631
-2016,Black,89
-2016,Hispanic,107
-2016,Native American,2
-2016,Pacific,1
-2016,White,59
+year,race,females enrolled,males enrolled
+2012,asian,307,1485
+2012,black,66,226
+2012,hispanic,44,283
+2012,native american,3,11
+2012,pacific,1,3
+2012,white,36,112
+2013,asian,291,1086
+2013,black,60,204
+2013,hispanic,50,297
+2013,native american,4,10
+2013,pacific,2,2
+2013,white,32,161
+2014,asian,444,1391
+2014,black,69,221
+2014,hispanic,71,328
+2014,native american,1,11
+2014,pacific,3,6
+2014,white,41,198
+2015,asian,532,1520
+2015,black,63,220
+2015,hispanic,75,264
+2015,native american,1,9
+2015,pacific,2,5
+2015,white,34,99
+2016,asian,631,1896
+2016,black,89,267
+2016,hispanic,107,359
+2016,native american,2,9
+2016,pacific,1,5
+2016,white,59,149
