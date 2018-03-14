@@ -1,0 +1,192 @@
+<html>
+
+<head>
+  <title>Project 2</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" type="text/css" href="project2.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-legend.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2"></div>
+
+      <div class="col-xs-8" style="margin: 0 auto">
+        <div><strong style="font-size: 20px">Select Race</strong></div>
+        <select id="race-select" class="form-control">
+          <option value="asian">Asian</option>
+          <option value="black">Black</option>
+          <option value="hispanic">Hispanic</option>
+          <option value="white">White</option>
+          <option value="native">Native American / Alaskan Native</option>
+          <option value="pacific">Pacific Islander / Native Hawaiian</option>
+        </select>
+        <div id="vis-1"></div>
+      </div>
+
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+
+      // Setting up the graph dimensions and margins
+      var margin = {top: 30, right: 30, bottom: 60, left: 60};
+      var width = 800 - margin.left - margin.right;
+      var height = 600 - margin.top - margin.bottom;
+
+      // Setting the ranges
+      var x = d3.scaleLinear().range([0, width]);
+      var y = d3.scaleLinear().range([height, 0]);
+
+      var x_axis = d3.axisBottom(x).ticks(5).tickFormat(d3.format('0'));
+      var y_axis = d3.axisLeft(y);
+
+      // Setting up the line function
+      var line_function_females = d3.line()
+                                      .x(function(d) { return x(d.year); })
+                                      .y(function(d) { return y(d.femalesEnrolled); })
+                                      .curve(d3.curveLinear);
+
+      var line_function_males = d3.line()
+                                    .x(function(d) { return x(d.year); })
+                                    .y(function(d) { return y(d.malesEnrolled); })
+                                    .curve(d3.curveLinear);
+
+      d3.csv('vis1_data_asian_only.csv', function(error_asian, data_asian) {
+
+        // Adding padding for the axes
+        x.domain(d3.extent(data_asian, function(d) { return parseInt(d.year); }));
+        var y_max = d3.max(data_asian, function(d) { return Math.max(parseInt(d.femalesEnrolled), parseInt(d.malesEnrolled)); });
+        y.domain([0, Math.ceil(y_max + (y_max*0.10))]);
+
+        // Initializing svg
+        var svg_vis1 = d3.select('#vis-1')
+                         .append('svg')
+                           .attr('width', width + margin.left + margin.right)
+                           .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Rendering everything
+        svg_vis1.append('path')
+                  .attr('class', 'line line-female')
+                  .attr('d', line_function_females(data_asian))
+                  .style('stroke', '#00D')
+                  .style('stroke-width', '4');
+
+        svg_vis1.append('path')
+                  .attr('class', 'line line-male')
+                  .attr('d', line_function_males(data_asian))
+                  .style('stroke', '#0D0')
+                  .style('stroke-width', '4');
+
+        svg_vis1.append('g')
+                  .attr('transform', 'translate(0, ' + height + ')')
+                  .attr('class', 'x-axis')
+                  .call(x_axis);
+
+        svg_vis1.append('g')
+                  .attr('class', 'y-axis')
+                  .call(y_axis);
+
+        svg_vis1.append('text')
+                  .attr('class', 'label')
+                  .text('Academic Year')
+                  .attr('x', (width/2))
+                  .attr('y', height + 40)
+                  .style('fill', '#090');
+
+        svg_vis1.append('text')
+                  .attr('class', 'label')
+                  .text('Number Enrolled')
+                  .attr('transform', 'rotate(-90)')
+                  .attr('x', -(height/2))
+                  .attr('y', -50)
+                  .style('fill', '#090');
+
+        var ordinal = d3.scaleOrdinal()
+                          .domain(['F', 'M'])
+                          .range(['#00D', '#0D0']);
+
+        svg_vis1.append('g')
+                  .attr('class', 'legendOrdinal')
+                  .attr('transform', 'translate(20,7)');
+
+        var legendOrdinal = d3.legendColor()
+                                .shape('path', d3.symbol().type(d3.symbolSquare).size(150)())
+                                .shapePadding(5)
+                                .scale(ordinal);
+
+        svg_vis1.select('.legendOrdinal')
+                  .call(legendOrdinal);
+
+    });
+
+    function change_race(race) {
+
+      var file = 'no_file_chosen';
+      switch (race) {
+        case 'asian':
+          file = 'vis1_data_asian_only.csv';
+          break;
+        case 'black':
+          file = 'vis1_data_black_only.csv';
+          break;
+        case "hispanic":
+          file = 'vis1_data_hispanic_only.csv';
+          break;
+        case 'native':
+          file = 'vis1_data_native_only.csv';
+          break;
+        case 'pacific':
+          file = 'vis1_data_pacific_only.csv';
+          break;
+        case 'white':
+          file = 'vis1_data_white_only.csv';
+          break;
+        default:
+          console.log('default case reached');
+          break;
+      }
+
+      d3.csv(file, function(error, data) {
+
+        // Rescaling the axes
+        x.domain(d3.extent(data, function(d) { return parseInt(d.year); }));
+        var y_max = d3.max(data, function(d) { return Math.max(parseInt(d.femalesEnrolled), parseInt(d.malesEnrolled)); });
+        y.domain([0, Math.ceil(y_max + (y_max*0.10))]);
+
+        var svg = d3.select('#vis-1').transition();
+
+        svg.select('.line-female')
+             .duration(1000)
+             .attr('d', line_function_females(data));
+        svg.select('.line-male')
+             .duration(1000)
+             .attr('d', line_function_males(data));
+        svg.select('.x-axis')
+             .duration(1000)
+             .call(x_axis);
+        svg.select('.y-axis')
+             .duration(1000)
+             .call(y_axis);
+
+      });
+
+    }
+
+    $('#race-select').change(function() {
+      var selected_race = $(this).val()
+      change_race(selected_race);
+    });
+
+  </script>
+</body>
+
+</html>
