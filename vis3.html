@@ -1,0 +1,228 @@
+<html>
+
+<head>
+  <title>Project 2</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" type="text/css" href="project2.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-legend.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2">
+        <button type='button' onclick="changeViz()">Switch Metric</button>
+      </div>
+
+      <div class="col-xs-8" style="margin: 0 auto">
+        <div id="vis-3"></div>
+        <div id="vis-3-gpa"></div>
+      </div>
+
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+
+  <script>
+    $('#vis-3-gpa').hide()//initial hiding of second viz
+  </script>
+
+  <script type="text/javascript">
+    function changeViz(){
+      $('#vis-3').toggle()
+      $('#vis-3-gpa').toggle()
+    }
+  </script>
+
+  <script type="text/javascript">
+
+      // Setting up the graph dimensions and margins
+      var margin = {top: 30, right: 30, bottom: 60, left: 60};
+      var width = 800 - margin.left - margin.right;
+      var height = 800 - margin.top - margin.bottom;
+
+      // Setting the ranges
+      var x = d3.scaleLinear().range([0, width]);
+      var y = d3.scaleLinear().range([height, 0]);
+
+      var x_axis = d3.axisBottom(x);
+      var y_axis = d3.axisLeft(y);
+
+      // Setting up the line function
+      var line_function = d3.line()
+                           .x(function(d) { return x(d.act); })
+                           .y(function(d) { return y(d.fep); })
+                           .curve(d3.curveLinear);
+
+      d3.csv('vis3_data_act.csv', function(error, data) {
+        // Adding padding for the axes
+        //x.domain(d3.extent(data_asian, function(d) { return Math.max(parseFloat(d.femaleACTMath), parseFloat(d.maleACTMath)); }));
+        x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleACTMath); }));
+        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent); });
+        //y.domain([0, Math.ceil(y_max + (y_max*0.10))]);
+        y.domain([0, 0.6]);
+
+        // Initializing svg
+        var svg_vis3 = d3.select('#vis-3')
+                         .append('svg')
+                           .attr('width', width + margin.left + margin.right)
+                           .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Rendering everything
+        for (var i = 0; i < data.length; i++) {
+            var dp = [];
+            dp.push({'act': data[i].FemaleACTMath, 'fep': data[i].FemalesEnrolledPercent});
+            dp.push({'act': data[i].MaleACTMath, 'fep': data[i].FemalesEnrolledPercent});
+        //var test = [{
+        //                "act": 25, 
+        //                "fep": 0.5
+        //                }, 
+        //            {
+        //                "act": 28, 
+        //                "fep": 0.5
+        //                }
+        //            ];
+            svg_vis3.append('path')
+                      .attr('class', 'line')
+                      .attr('d', line_function(dp))
+                      .style('stroke', '#00D')
+                      .style('stroke-width', '1');
+        }
+
+
+        svg_vis3.selectAll('circle')
+                .data(data)
+                .enter()
+                .append('circle')
+                    .attr('r', 3)
+                    .attr('cx', function(d) { return x(d.FemaleACTMath); })
+                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent); })
+                    .attr('class', 'point')
+                    .style('fill', '#0D0')
+
+        svg_vis3.selectAll("svg")
+                    .data(data)
+                    .enter()
+                    .append("path")
+                    .attr("d", d3.symbol().type(d3.symbolSquare).size(32))
+                    .attr("transform", function(d) {
+                        return "translate(" + x(parseFloat(d.MaleACTMath)) + "," + y(parseFloat(d.FemalesEnrolledPercent)) + ")";
+                    })
+                    .attr("fill", "#f49242")
+                    .attr("stroke", "#000");
+
+        svg_vis3.append('g')
+                  .attr('transform', 'translate(0, ' + height + ')')
+                  .attr('class', 'x-axis')
+                  .call(x_axis);
+
+        svg_vis3.append('g')
+                  .attr('class', 'y-axis')
+                  .call(y_axis);
+
+        svg_vis3.append('text')
+                  .attr('class', 'label')
+                  .text('ACT')
+                  .attr('x', (width/2))
+                  .attr('y', height + 40)
+                  .style('fill', '#090');
+
+        svg_vis3.append('text')
+                  .attr('class', 'label')
+                  .text('Female Enrollment Percent')
+                  .attr('transform', 'rotate(-90)')
+                  .attr('x', -(height/2))
+                  .attr('y', -50)
+                  .style('fill', '#090');
+    });
+
+      d3.csv('vis3_data_gpa.csv', function(error, data) {
+        console.log(data);
+        // Adding padding for the axes
+        x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleHSGPA); }));
+        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent); });
+        y.domain([0, 0.6]);
+
+        // Initializing svg
+        var svg_vis3_gpa = d3.select('#vis-3-gpa')
+                         .append('svg')
+                           .attr('width', width + margin.left + margin.right)
+                           .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+        // Rendering everything
+        for (var i = 0; i < data.length; i++) {
+            var dp = [];
+            dp.push({'act': data[i].FemaleHSGPA, 'fep': data[i].FemalesEnrolledPercent});
+            dp.push({'act': data[i].MaleHSGPA, 'fep': data[i].FemalesEnrolledPercent});
+            svg_vis3_gpa.append('path')
+                      .attr('class', 'line')
+                      .attr('d', line_function(dp))
+                      .style('stroke', '#00D')
+                      .style('stroke-width', '1');
+        }
+
+
+        svg_vis3_gpa.selectAll('circle')
+                .data(data)
+                .enter()
+                .append('circle')
+                    .attr('r', 3)
+                    .attr('cx', function(d) { console.log(d.FemaleHSGPA); return x(d.FemaleHSGPA); })
+                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent); })
+                    .attr('class', 'point')
+                    .style('fill', '#0D0')
+
+        svg_vis3_gpa.selectAll("svg")
+                    .data(data)
+                    .enter()
+                    .append("path")
+                    .attr("d", d3.symbol().type(d3.symbolSquare).size(32))
+                    .attr("transform", function(d) {
+                        return "translate(" + x(parseFloat(d.MaleHSGPA)) + "," + y(parseFloat(d.FemalesEnrolledPercent)) + ")";
+                    })
+                    .attr("fill", "#f49242")
+                    .attr("stroke", "#000");
+
+        svg_vis3_gpa.append('g')
+                  .attr('transform', 'translate(0, ' + height + ')')
+                  .attr('class', 'x-axis')
+                  .call(x_axis);
+
+        svg_vis3_gpa.append('g')
+                  .attr('class', 'y-axis')
+                  .call(y_axis);
+
+        svg_vis3_gpa.append('text')
+                  .attr('class', 'label')
+                  .text('HS GPA')
+                  .attr('x', (width/2))
+                  .attr('y', height + 40)
+                  .style('fill', '#090');
+
+        svg_vis3_gpa.append('text')
+                  .attr('class', 'label')
+                  .text('Female Enrollment Percent')
+                  .attr('transform', 'rotate(-90)')
+                  .attr('x', -(height/2))
+                  .attr('y', -50)
+                  .style('fill', '#090');
+    });
+
+
+    $('#race-select').change(function() {
+      var selected_race = $(this).val()
+      change_metric(selected_race);
+    });
+
+  </script>
+</body>
+
+</html>
