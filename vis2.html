@@ -1,0 +1,157 @@
+<html>
+
+<head>
+  <title>Project 2</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
+  <link rel="stylesheet" type="text/css" href="project2.css"></link>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="d3-legend.js"></script>
+  <!--Put your D3 import statement between these two lines-->
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-2">
+        <button type='button' onclick="changeViz()">Switch Gender</button>
+      </div>
+
+      <div class="col-xs-8" style="margin: 0 auto">
+        <h2 id='vis-2-title'>Women</h2>
+        <h2 id='vis-2b-title'>Men</h2>
+        <div id="vis-2"></div>
+        <div id="vis-2b"></div>
+      </div>
+
+      <div class="col-xs-2"></div>
+    </div>
+  </div>
+
+  <script>
+    $('#vis-2b').hide()//initial hiding of second viz
+    $('#vis-2b-title').hide()
+  </script>
+
+  <script type="text/javascript">
+    function changeViz(){
+      $('#vis-2').toggle()
+      $('#vis-2b').toggle()
+      $('#vis-2b-title').toggle()
+      $('#vis-2-title').toggle()
+    }
+  </script>
+
+  <script type="text/javascript">
+
+    // Found a lot of help on stacked bar charts here:
+    // https://bl.ocks.org/mbostock/3886208
+
+    // Setting up the graph dimensions and margins
+    var margin = {top: 30, right: 30, bottom: 60, left: 60};
+    var width = 800 - margin.left - margin.right;
+    var height = 600 - margin.top - margin.bottom;
+
+    // Setting the ranges
+    var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
+    var y = d3.scaleLinear().range([height, 0]);
+    var z = d3.scaleOrdinal().range(["orange", "yellow", "red"]);
+
+    var x_axis = d3.axisBottom(x);
+    var y_axis = d3.axisLeft(y);
+
+    d3.csv('vis2_normalized_data.csv', function(error, data) {
+
+      var column_headers = data.columns.slice(1, 4);
+
+      x.domain(data.map(function(d) { return d.institution; }));
+      y.domain([0, 100])
+      z.domain(column_headers)
+
+      // Initializing svg
+      var svg_vis2 = d3.select('#vis-2')
+                         .append('svg')
+                           .attr('width', width + margin.left + margin.right)
+                           .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      svg_vis2.append('g')
+         .selectAll('g')
+         .data(d3.stack().keys(column_headers)(data))
+         .enter().append('g')
+           .attr("fill", function(d) { return z(d.key); })
+         .selectAll("rect")
+         .data(function(d) { return d; })
+         .enter().append("rect")
+           .attr("x", function(d) { return x(d.data.institution); })
+           .attr("y", function(d) { return y(d[1]); })
+           .attr("height", function(d) { return (y(d[0]) - y(d[1])); })
+           .attr("width", x.bandwidth());
+
+      svg_vis2.append('g')
+                  .attr('transform', 'translate(0, ' + height + ')')
+                  .attr('class', 'x-axis')
+                  .call(x_axis)
+                .selectAll('text')
+                  .attr('transform','rotate(-90)')
+                  .style('text-anchor','end');
+
+      svg_vis2.append('g')
+                .attr('class', 'y-axis')
+                .call(y_axis);
+
+          });
+
+// Men Section
+
+
+    d3.csv('vis2_normalized_data.csv', function(error, data) {
+
+      var column_headers = data.columns.slice(4, 7);
+
+      x.domain(data.map(function(d) { return d.institution; }));
+      y.domain([0, 100])
+      z.domain(column_headers)
+
+      // Initializing svg
+      var svg_vis2b = d3.select('#vis-2b')
+                         .append('svg')
+                           .attr('width', width + margin.left + margin.right)
+                           .attr('height', height + margin.top + margin.bottom)
+                         .append('g')
+                           .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+      svg_vis2b.append('g')
+         .selectAll('g')
+         .data(d3.stack().keys(column_headers)(data))
+         .enter().append('g')
+           .attr("fill", function(d) { return z(d.key); })
+         .selectAll("rect")
+         .data(function(d) { return d; })
+         .enter().append("rect")
+           .attr("x", function(d) { return x(d.data.institution); })
+           .attr("y", function(d) { return y(d[1]); })
+           .attr("height", function(d) { return (y(d[0]) - y(d[1])); })
+           .attr("width", x.bandwidth());
+
+      svg_vis2b.append('g')
+                  .attr('transform', 'translate(0, ' + height + ')')
+                  .attr('class', 'x-axis')
+                  .call(x_axis)
+                .selectAll('text')
+                  .attr('transform','rotate(-90)')
+                  .style('text-anchor','end');
+
+      svg_vis2b.append('g')
+                .attr('class', 'y-axis')
+                .call(y_axis);
+
+
+    });
+
+  </script>
+</body>
+
+</html>
