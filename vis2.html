@@ -56,7 +56,7 @@
     // Setting the ranges
     var x = d3.scaleBand().rangeRound([0, width]).paddingInner(0.05).align(0.1);
     var y = d3.scaleLinear().range([height, 0]);
-    var z = d3.scaleOrdinal().range(["orange", "yellow", "red"]);
+    var z = d3.scaleOrdinal().range(["#f03b20", "#feb24c", "#FFFFFF"]);
 
     var x_axis = d3.axisBottom(x);
     var y_axis = d3.axisLeft(y);
@@ -142,12 +142,12 @@
                   .call(x_axis)
                 .selectAll('text')
                   .attr('transform','rotate(-90)')
-                  .style('text-anchor','end');
+                  .style('text-anchor','end')
+                  ;
 
       svg_vis2b.append('g')
                 .attr('class', 'y-axis')
                 .call(y_axis);
-
 
     });
 
