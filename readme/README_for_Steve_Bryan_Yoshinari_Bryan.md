@@ -41,7 +41,7 @@ All team members contributed to what visuzliation we want.
 * Bryan: Prototyping, vis iteration, documentation, cosmetic coding
 * Yoshinari: Prototyping, vis coding, initial documentation
 
-# How to run your project 
+# How to Run
 Assuming you are runnning a local python server (i.e., `python -m http.server` for Python 3),
 1. Run your local server in this directory
 1. Open your browser
