@@ -1,4 +1,4 @@
-f = open('vis2_data.csv', 'r')
+f = open('data/vis2_data.csv', 'r')
 
 f.readline()
 
