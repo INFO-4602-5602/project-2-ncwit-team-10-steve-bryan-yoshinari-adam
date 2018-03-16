@@ -3,7 +3,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import numpy as np
 
-csv_file = open('NCWIT_DataV2_RawData.csv', 'r')
+csv_file = open('data/NCWIT_DataV2_RawData.csv', 'r')
 csvreader = csv.reader(csv_file)
 
 headers = csvreader.__next__()

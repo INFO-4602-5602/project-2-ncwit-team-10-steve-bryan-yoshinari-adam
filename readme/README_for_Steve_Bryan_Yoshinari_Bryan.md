@@ -41,4 +41,12 @@ All team members contributed to what visuzliation we want.
 * Bryan: Prototyping, vis iteration, documentation, cosmetic coding
 * Yoshinari: Prototyping, vis coding, initial documentation
 
+# How to Run
+Assuming you are runnning a local python server (i.e., `python -m http.server` for Python 3),
+1. Run your local server in this directory
+1. Open your browser
+1. Visualization 1 is at `http://localhost:8000/vis1.html`
+1. Visualization 2 is at `http://localhost:8000/vis2.html`
+1. Visualization 3 is at `http://localhost:8000/vis3.html`
+
 #CU/INFO5602

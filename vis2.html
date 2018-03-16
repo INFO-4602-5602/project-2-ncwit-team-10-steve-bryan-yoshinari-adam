@@ -61,7 +61,7 @@
     var x_axis = d3.axisBottom(x);
     var y_axis = d3.axisLeft(y);
 
-    d3.csv('vis2_normalized_data.csv', function(error, data) {
+    d3.csv('data/vis2_normalized_data.csv', function(error, data) {
 
       var column_headers = data.columns.slice(1, 4);
 
@@ -107,7 +107,7 @@
 // Men Section
 
 
-    d3.csv('vis2_normalized_data.csv', function(error, data) {
+    d3.csv('data/vis2_normalized_data.csv', function(error, data) {
 
       var column_headers = data.columns.slice(4, 7);
 
