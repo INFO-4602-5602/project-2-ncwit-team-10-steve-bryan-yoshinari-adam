@@ -58,7 +58,7 @@
                                     .y(function(d) { return y(d.malesEnrolled); })
                                     .curve(d3.curveLinear);
 
-      d3.csv('vis1_data_asian_only.csv', function(error_asian, data_asian) {
+      d3.csv('data/vis1_data_asian_only.csv', function(error_asian, data_asian) {
 
         // Adding padding for the axes
         x.domain(d3.extent(data_asian, function(d) { return parseInt(d.year); }));
@@ -133,22 +133,22 @@
       var file = 'no_file_chosen';
       switch (race) {
         case 'asian':
-          file = 'vis1_data_asian_only.csv';
+          file = 'data/vis1_data_asian_only.csv';
           break;
         case 'black':
-          file = 'vis1_data_black_only.csv';
+          file = 'data/vis1_data_black_only.csv';
           break;
         case "hispanic":
-          file = 'vis1_data_hispanic_only.csv';
+          file = 'data/vis1_data_hispanic_only.csv';
           break;
         case 'native':
-          file = 'vis1_data_native_only.csv';
+          file = 'data/vis1_data_native_only.csv';
           break;
         case 'pacific':
-          file = 'vis1_data_pacific_only.csv';
+          file = 'data/vis1_data_pacific_only.csv';
           break;
         case 'white':
-          file = 'vis1_data_white_only.csv';
+          file = 'data/vis1_data_white_only.csv';
           break;
         default:
           console.log('default case reached');

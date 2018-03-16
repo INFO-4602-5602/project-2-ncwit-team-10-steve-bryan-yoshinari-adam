@@ -58,7 +58,7 @@
                            .y(function(d) { return y(d.fep); })
                            .curve(d3.curveLinear);
 
-      d3.csv('vis3_data_act.csv', function(error, data) {
+      d3.csv('data/vis3_data_act.csv', function(error, data) {
         // Adding padding for the axes
         //x.domain(d3.extent(data_asian, function(d) { return Math.max(parseFloat(d.femaleACTMath), parseFloat(d.maleACTMath)); }));
         x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleACTMath); }));
@@ -142,7 +142,7 @@
                   .style('fill', '#090');
     });
 
-      d3.csv('vis3_data_gpa.csv', function(error, data) {
+      d3.csv('data/vis3_data_gpa.csv', function(error, data) {
         console.log(data);
         // Adding padding for the axes
         x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleHSGPA); }));
