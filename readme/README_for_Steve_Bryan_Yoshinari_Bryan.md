@@ -37,8 +37,8 @@ After creating the vis that we submitted, we continued to prototype other ideas,
 # Team Roles
 All team members contributed to what visuzliation we want.
 * Adam: Data cleanup and extraction, vis iteration, vis coding
-* Steve: vis coding, prototyping, vis iteration
-* Bryan: Prototyping, vis iteration, documentation, cosmetic coding
+* Steve: vis coding, prototyping, vis iteration, suggesting refinements
+* Bryan: Prototyping, vis iteration, documentation, cosmetic coding, suggesting refinements
 * Yoshinari: Prototyping, vis coding, initial documentation
 
 # How to Run
