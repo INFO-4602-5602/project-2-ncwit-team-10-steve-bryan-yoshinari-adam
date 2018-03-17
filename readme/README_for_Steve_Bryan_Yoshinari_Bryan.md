@@ -49,4 +49,8 @@ Assuming you are runnning a local python server (i.e., `python -m http.server` f
 1. Visualization 2 is at `http://localhost:8000/vis2.html`
 1. Visualization 3 is at `http://localhost:8000/vis3.html`
 
+
+# References
+* [Changing the size of a button](https://www.w3schools.com/bootstrap/bootstrap_buttons.asp)
+
 #CU/INFO5602

@@ -17,8 +17,8 @@
 ## Vis3
 - [ ] Y-axis values should be converted to integers 0-100 instead of decimal representation.
 - [ ] I prototyped another version with Excel and Preview that Steve thinks ours should probably be like, but we might not have the time to do it. 
-- [ ] Make the button more obvious, as discussed for Vis2
-- [ ] “ACT” should be “ACT Score”
+<!--- - [ ] Make the button more obvious, as discussed for Vis2 --->
+<!--- - [ ] “ACT” should be “ACT Score” --->
 - [ ] Legend
 
 ## Other

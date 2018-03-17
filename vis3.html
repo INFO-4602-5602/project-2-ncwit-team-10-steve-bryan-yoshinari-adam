@@ -15,7 +15,7 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-2">
-        <button type='button' onclick="changeViz()">Switch Metric</button>
+        <button type='button' class='btn btn-primary btn-lg' onclick="changeViz()">Switch Metric</button>
       </div>
 
       <div class="col-xs-8" style="margin: 0 auto">
@@ -128,7 +128,7 @@
 
         svg_vis3.append('text')
                   .attr('class', 'label')
-                  .text('ACT')
+                  .text('ACT Score')
                   .attr('x', (width/2))
                   .attr('y', height + 40)
                   .style('fill', '#090');
