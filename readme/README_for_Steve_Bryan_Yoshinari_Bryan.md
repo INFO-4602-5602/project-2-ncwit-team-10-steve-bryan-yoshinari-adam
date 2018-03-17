@@ -33,16 +33,17 @@ After creating the vis that we submitted, we continued to prototype other ideas,
 * Different restrictions by years (to see if we have enough data to plot)
 * Whether the visualization is clean enough to interpret or not.
 * Validity of the resulting visualization or not (confusing or not).
+* After making the initial versions of 3 visualizations are made, we came up with checklists to make the visualizations easy to understand (e.g., adding legends, improved prototypes suggested by Bryan). 
 
 # Team Roles
-All team members contributed to what visuzliation we want.
+All team members contributed to what visualization we want.
 * Adam: Data cleanup and extraction, vis iteration, vis coding
 * Steve: vis coding, prototyping, vis iteration, suggesting refinements
 * Bryan: Prototyping, vis iteration, documentation, cosmetic coding, suggesting refinements
 * Yoshinari: Prototyping, vis coding, initial documentation
 
 # How to Run
-Assuming you are runnning a local python server (i.e., `python -m http.server` for Python 3),
+Assuming you are running a local python server (i.e., `python -m http.server` for Python 3),
 1. Run your local server in this directory
 1. Open your browser
 1. Visualization 1 is at `http://localhost:8000/vis1.html`
