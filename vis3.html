@@ -15,7 +15,7 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-2">
-        <button type='button' onclick="changeViz()">Switch Metric</button>
+        <button type='button' class='btn btn-primary btn-lg' onclick="changeViz()">Switch Metric</button>
       </div>
 
       <div class="col-xs-8" style="margin: 0 auto">
@@ -62,9 +62,9 @@
         // Adding padding for the axes
         //x.domain(d3.extent(data_asian, function(d) { return Math.max(parseFloat(d.femaleACTMath), parseFloat(d.maleACTMath)); }));
         x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleACTMath); }));
-        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent); });
-        //y.domain([0, Math.ceil(y_max + (y_max*0.10))]);
-        y.domain([0, 0.6]);
+        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent * 100); });
+        y.domain([0, Math.ceil(y_max)]);
+        //y.domain([0, 0.6]);
 
         // Initializing svg
         var svg_vis3 = d3.select('#vis-3')
@@ -77,8 +77,8 @@
         // Rendering everything
         for (var i = 0; i < data.length; i++) {
             var dp = [];
-            dp.push({'act': data[i].FemaleACTMath, 'fep': data[i].FemalesEnrolledPercent});
-            dp.push({'act': data[i].MaleACTMath, 'fep': data[i].FemalesEnrolledPercent});
+            dp.push({'act': data[i].FemaleACTMath, 'fep': data[i].FemalesEnrolledPercent * 100});
+            dp.push({'act': data[i].MaleACTMath, 'fep': data[i].FemalesEnrolledPercent * 100});
         //var test = [{
         //                "act": 25, 
         //                "fep": 0.5
@@ -102,7 +102,7 @@
                 .append('circle')
                     .attr('r', 3)
                     .attr('cx', function(d) { return x(d.FemaleACTMath); })
-                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent); })
+                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent * 100); })
                     .attr('class', 'point')
                     .style('fill', '#0D0')
 
@@ -112,7 +112,7 @@
                     .append("path")
                     .attr("d", d3.symbol().type(d3.symbolSquare).size(32))
                     .attr("transform", function(d) {
-                        return "translate(" + x(parseFloat(d.MaleACTMath)) + "," + y(parseFloat(d.FemalesEnrolledPercent)) + ")";
+                        return "translate(" + x(parseFloat(d.MaleACTMath)) + "," + y(parseFloat(d.FemalesEnrolledPercent * 100)) + ")";
                     })
                     .attr("fill", "#f49242")
                     .attr("stroke", "#000");
@@ -128,7 +128,7 @@
 
         svg_vis3.append('text')
                   .attr('class', 'label')
-                  .text('ACT')
+                  .text('ACT Score')
                   .attr('x', (width/2))
                   .attr('y', height + 40)
                   .style('fill', '#090');
@@ -140,14 +140,32 @@
                   .attr('x', -(height/2))
                   .attr('y', -50)
                   .style('fill', '#090');
+
+        var ordinal = d3.scaleOrdinal()
+                          .domain(["F", "M"])
+                          .range(['#0D0', '#f49242']);
+
+        svg_vis3.append('g')
+                  .attr('class', 'legendOrdinal')
+                  .attr('transform', 'translate(40,7)');
+
+        var legendOrdinal = d3.legendColor()
+                                .shape('path', d3.symbol().type(d3.symbolSquare).size(100)())
+                                .shapePadding(8)
+                                .scale(ordinal);
+
+        svg_vis3.select('.legendOrdinal')
+                  .call(legendOrdinal);
+
     });
 
       d3.csv('data/vis3_data_gpa.csv', function(error, data) {
         console.log(data);
         // Adding padding for the axes
         x.domain(d3.extent(data, function(d) { return parseFloat(d.FemaleHSGPA); }));
-        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent); });
-        y.domain([0, 0.6]);
+        var y_max = d3.max(data, function(d) { return parseFloat(d.FemalesEnrolledPercent * 100); });
+        //y.domain([0, 0.6]);
+        y.domain([0, Math.ceil(y_max)]);
 
         // Initializing svg
         var svg_vis3_gpa = d3.select('#vis-3-gpa')
@@ -160,8 +178,8 @@
         // Rendering everything
         for (var i = 0; i < data.length; i++) {
             var dp = [];
-            dp.push({'act': data[i].FemaleHSGPA, 'fep': data[i].FemalesEnrolledPercent});
-            dp.push({'act': data[i].MaleHSGPA, 'fep': data[i].FemalesEnrolledPercent});
+            dp.push({'act': data[i].FemaleHSGPA, 'fep': data[i].FemalesEnrolledPercent * 100});
+            dp.push({'act': data[i].MaleHSGPA, 'fep': data[i].FemalesEnrolledPercent * 100});
             svg_vis3_gpa.append('path')
                       .attr('class', 'line')
                       .attr('d', line_function(dp))
@@ -176,7 +194,7 @@
                 .append('circle')
                     .attr('r', 3)
                     .attr('cx', function(d) { console.log(d.FemaleHSGPA); return x(d.FemaleHSGPA); })
-                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent); })
+                    .attr('cy', function(d) { return y(d.FemalesEnrolledPercent * 100); })
                     .attr('class', 'point')
                     .style('fill', '#0D0')
 
@@ -186,7 +204,7 @@
                     .append("path")
                     .attr("d", d3.symbol().type(d3.symbolSquare).size(32))
                     .attr("transform", function(d) {
-                        return "translate(" + x(parseFloat(d.MaleHSGPA)) + "," + y(parseFloat(d.FemalesEnrolledPercent)) + ")";
+                        return "translate(" + x(parseFloat(d.MaleHSGPA)) + "," + y(parseFloat(d.FemalesEnrolledPercent * 100)) + ")";
                     })
                     .attr("fill", "#f49242")
                     .attr("stroke", "#000");
@@ -214,6 +232,23 @@
                   .attr('x', -(height/2))
                   .attr('y', -50)
                   .style('fill', '#090');
+
+        var ordinal = d3.scaleOrdinal()
+                          .domain(["F", "M"])
+                          .range(['#0D0', '#f49242']);
+
+        svg_vis3_gpa.append('g')
+                  .attr('class', 'legendOrdinal')
+                  .attr('transform', 'translate(40,7)');
+
+        var legendOrdinal = d3.legendColor()
+                                .shape('path', d3.symbol().type(d3.symbolSquare).size(100)())
+                                .shapePadding(20)
+                                .scale(ordinal);
+
+        svg_vis3_gpa.select('.legendOrdinal')
+                  .call(legendOrdinal);
+
     });
 
 
